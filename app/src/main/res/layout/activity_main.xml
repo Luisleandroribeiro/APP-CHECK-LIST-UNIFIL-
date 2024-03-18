@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="393dp"
+        android:layout_marginTop="100dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/taskbro" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="295dp"
+        android:layout_height="37dp"
+        android:layout_below="@id/imageView"
+        android:layout_marginTop="10dp"
+        android:text="CHECKLIST FOR WORK"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#3E7168"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="339dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/titleTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.5"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id porttitor at urna ipsum, erat nibh amet. Dignissim ullamcorper facilisis habitant egestas imperdiet nec velit. Phasellus tempor venenatis nullam convallis."
+        android:textColor="#5E5A5A"
+        android:textSize="13sp"
+        android:textStyle="normal" />
+
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="328dp"
+        android:layout_height="53dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/rounded_button_background"
+        android:elevation="0dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:padding="10dp"
+        android:layout_above="@id/descriptionTextView"
+        android:text="Register"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="0dp"
+        android:textSize="14sp"
+        app:backgroundTint="@color/green"
+        android:textStyle="bold"
+        tools:ignore="TypographyContrast" />
+
+
+
+
+</RelativeLayout>

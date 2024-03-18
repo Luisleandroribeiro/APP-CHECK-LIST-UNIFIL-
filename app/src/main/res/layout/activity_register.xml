@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:verticalScrollbarPosition="left">
+
+        <!-- Imagem no topo da tela -->
+        <ImageView
+            android:id="@+id/backgroundImageView"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:src="@drawable/checklistbro" />
+
+        <!-- Register Title -->
+        <TextView
+            android:id="@+id/registerTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/backgroundImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Register"
+            android:textColor="#3D7268"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <!-- Username Input -->
+        <RelativeLayout
+            android:id="@+id/usernameLayout"
+            android:layout_width="328dp"
+            android:layout_height="64dp"
+            android:layout_below="@id/registerTitleTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="10dp">
+
+            <!-- Rectangle 8 -->
+            <View
+                android:id="@+id/rectangle8_username"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_rectangle" />
+
+            <!-- Username EditText -->
+            <EditText
+                android:id="@+id/usernameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/rounded_rectangle"
+                android:hint="Username"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="#666666" />
+        </RelativeLayout>
+
+        <!-- Password Input -->
+        <RelativeLayout
+            android:id="@+id/passwordLayout"
+            android:layout_width="328dp"
+            android:layout_height="64dp"
+            android:layout_below="@id/usernameLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="33px"
+            android:layout_marginTop="10dp">
+
+            <!-- Rectangle 8 -->
+            <View
+                android:id="@+id/rectangle8_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_rectangle" />
+
+            <!-- Password EditText -->
+            <EditText
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/rounded_rectangle"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="#666666" />
+        </RelativeLayout>
+
+        <!-- Confirm Password Input -->
+        <RelativeLayout
+            android:id="@+id/confirmPasswordLayout"
+            android:layout_width="328dp"
+            android:layout_height="64dp"
+            android:layout_below="@id/passwordLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="33px"
+            android:layout_marginTop="10dp">
+
+            <!-- Rectangle 8 -->
+            <View
+                android:id="@+id/rectangle8_confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_rectangle" />
+
+            <!-- Confirm Password EditText -->
+            <EditText
+                android:id="@+id/confirmPasswordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/rounded_rectangle"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="#666666" />
+        </RelativeLayout>
+
+        <!-- Email Input -->
+        <RelativeLayout
+            android:id="@+id/emailLayout"
+            android:layout_width="328dp"
+            android:layout_height="64dp"
+            android:layout_below="@id/confirmPasswordLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="33px"
+            android:layout_marginTop="10dp">
+
+            <!-- Rectangle 8 -->
+            <View
+                android:id="@+id/rectangle8_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_rectangle" />
+
+            <!-- Email EditText -->
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/rounded_rectangle"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="#666666" />
+        </RelativeLayout>
+
+        <!-- Checkbox and Text -->
+        <!-- Terms of Use -->
+        <TextView
+            android:id="@+id/termsOfUseTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="650dp"
+            android:padding="12dp"
+            android:text="I read and accept the Terms Of Use"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/termsOfUseCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="650dp"
+            android:padding="12dp" />
+
+        <!-- Button Register -->
+        <RelativeLayout
+            android:id="@+id/registerButton"
+            android:layout_width="328dp"
+            android:layout_height="53dp"
+            android:layout_below="@id/termsOfUseCheckBox"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_button_background">
+
+            <!-- Login -->
+            <TextView
+                android:id="@+id/loginTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="12dp"
+                android:text="Register"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

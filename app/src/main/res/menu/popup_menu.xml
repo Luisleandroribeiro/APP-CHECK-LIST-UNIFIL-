@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/addTask"
+        android:title="Adicionar Tarefa" />
+    <item
+        android:id="@+id/completeTask"
+        android:title="Concluir Tarefa" />
+    <item
+        android:id="@+id/removeTask"
+        android:title="Remover Tarefa" />
+</menu>

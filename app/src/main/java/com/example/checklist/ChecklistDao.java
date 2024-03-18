@@ -1,0 +1,37 @@
+package com.example.checklist;
+
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import java.util.List;
+
+@Dao
+public interface ChecklistDao {
+    @Query("SELECT * FROM checklist_items")
+    List<ChecklistItem> getAllItems();
+
+    @Insert
+    void insert(ChecklistItem item);
+
+    @Update
+    void update(ChecklistItem item);
+
+    @Query("DELETE FROM checklist_items WHERE id = :itemId")
+    void delete(int itemId);
+
+    @Insert
+    void insertUser(User user);
+
+    @Query("SELECT COUNT(*) FROM users WHERE username = :username")
+    int getUserCountByUsername(String username);
+
+    @Query("SELECT COUNT(*) FROM users WHERE email = :email")
+    int getUserCountByEmail(String email);
+
+    @Query("SELECT COUNT(*) FROM users WHERE username = :username AND password = :password")
+    int getUserCountByUsernameAndPassword(String username, String password);
+
+    // Outros métodos de acesso aos dados, como consulta por ID, exclusão de todos os itens, etc.
+}
