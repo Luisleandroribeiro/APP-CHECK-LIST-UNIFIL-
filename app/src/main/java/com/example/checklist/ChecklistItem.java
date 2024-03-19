@@ -9,11 +9,13 @@ public class ChecklistItem {
     private int id;
     private String name;
     private boolean completed;
+    private int userId; // Adicionando o campo userId
 
     // Construtor
-    public ChecklistItem(String name, boolean completed) {
+    public ChecklistItem(String name, boolean completed, int userId) {
         this.name = name;
         this.completed = completed;
+        this.userId = userId;
     }
 
     // Getter para o campo 'id'
@@ -44,5 +46,15 @@ public class ChecklistItem {
     // Setter para o campo 'completed'
     public void setCompleted(boolean completed) {
         this.completed = completed;
+    }
+
+    // Getter para o campo 'userId'
+    public int getUserId() {
+        return userId;
+    }
+
+    // Setter para o campo 'userId'
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

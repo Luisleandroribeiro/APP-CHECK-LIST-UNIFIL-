@@ -61,7 +61,10 @@
             android:layout_height="wrap_content"
             android:minHeight="48dp"
             android:layout_weight="1"
-            android:hint="Data" />
+            android:hint="Data"
+            android:inputType="none"
+            android:focusable="false"
+            android:onClick="mostrarDatePicker" />
 
         <EditText
             android:id="@+id/horaEditText"
@@ -69,8 +72,12 @@
             android:minHeight="48dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Hora" />
+            android:hint="Hora"
+            android:inputType="none"
+            android:focusable="false"
+            android:onClick="mostrarTimePicker" />
     </LinearLayout>
+
 
     <!-- Descrição -->
     <TextView

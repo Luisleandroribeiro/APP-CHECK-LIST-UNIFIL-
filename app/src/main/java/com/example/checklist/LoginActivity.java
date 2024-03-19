@@ -68,9 +68,10 @@ public class LoginActivity extends AppCompatActivity {
                             if (isAuthenticated) {
                                 // Usuário autenticado com sucesso, iniciar a próxima atividade
                                 Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                // Aqui você pode iniciar a próxima atividade
-                                //Intent intent = new Intent(LoginActivity.this, NextActivity.class);
-                                //startActivity(intent);
+                                // Inicia a atividade de ChecklistMain
+                                Intent intent = new Intent(LoginActivity.this, ChecklistMain.class);
+                                startActivity(intent);
+                                finish(); // Finaliza a LoginActivity após o login bem-sucedido
                             } else {
                                 // Nome de usuário ou senha incorretos, exibir mensagem de erro
                                 Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();

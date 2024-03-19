@@ -12,13 +12,13 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <!-- ListView para exibir as tarefas -->
     <ListView
-        android:id="@+id/checklistListView"
+        android:id="@+id/listViewTarefas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/titleTextView"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/actionsButton"
@@ -28,5 +28,6 @@
         android:layout_alignParentEnd="true"
         android:text="Ações"
         android:onClick="showPopupMenu" />
+
 
 </RelativeLayout>

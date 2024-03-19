@@ -2,8 +2,10 @@ package com.example.checklist;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -15,18 +17,40 @@ import java.util.Calendar;
 
 public class AdicionarTarefaActivity extends AppCompatActivity {
 
+    private EditText tituloEditText, subtituloEditText, descricaoEditText;
     private EditText dataEditText, horaEditText;
+    private Button cancelarButton, salvarButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_tarefa);
 
-        // Inicializa os EditTexts
+        // Inicializa os EditTexts e os botões
+        tituloEditText = findViewById(R.id.tituloEditText);
+        subtituloEditText = findViewById(R.id.subtituloEditText);
+        descricaoEditText = findViewById(R.id.descricaoEditText);
         dataEditText = findViewById(R.id.dataEditText);
         horaEditText = findViewById(R.id.horaEditText);
+        cancelarButton = findViewById(R.id.cancelarButton);
+        salvarButton = findViewById(R.id.salvarButton);
 
-        // Define os listeners de clique nos EditTexts
+        // Define os listeners de clique para os botões
+        cancelarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelarAdicaoTarefa();
+            }
+        });
+
+        salvarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                salvarTarefa();
+            }
+        });
+
+        // Define os listeners de clique nos EditTexts de data e hora
         dataEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,39 +94,47 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String horaSelecionada = hourOfDay + ":" + minute;
+                        // Formatar a hora e o minuto com dois dígitos
+                        String horaFormatada = String.format("%02d", hourOfDay);
+                        String minutoFormatado = String.format("%02d", minute);
+                        String horaSelecionada = horaFormatada + ":" + minutoFormatado;
                         horaEditText.setText(horaSelecionada);
                     }
                 }, hora, minuto, true);
         timePickerDialog.show();
     }
 
+
     // Método para salvar a tarefa
-    public void salvarTarefa(View view) {
-        // Obter os dados da tarefa dos campos de entrada
+    private void salvarTarefa() {
+        // Obtenha os dados da tarefa dos campos de entrada
         String titulo = tituloEditText.getText().toString();
         String subtitulo = subtituloEditText.getText().toString();
         String data = dataEditText.getText().toString();
         String hora = horaEditText.getText().toString();
         String descricao = descricaoEditText.getText().toString();
 
-        // Criar um objeto de tarefa
+        // Crie um objeto de tarefa
         Tarefa tarefa = new Tarefa(titulo, subtitulo, data, hora, descricao);
 
-        // Salvar a tarefa no banco de dados
+        // Salve a tarefa no banco de dados
+        TarefaDAO tarefaDAO = new TarefaDAO(this);
         long resultado = tarefaDAO.inserirTarefa(tarefa);
 
         if (resultado != -1) {
             Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show();
+            // Vá para a tela de ChecklistMain
+            startActivity(new Intent(this, ChecklistMain.class));
+            finish(); // Finalize esta atividade
         } else {
             Toast.makeText(this, "Falha ao salvar a tarefa", Toast.LENGTH_SHORT).show();
         }
     }
 
-
     // Método para cancelar a adição da tarefa
-    public void cancelar(View view) {
-        // Implemente a lógica para cancelar a adição da tarefa
-        finish(); // Fecha a atividade de adicionar tarefa
+    private void cancelarAdicaoTarefa() {
+        // Volte para a tela de ChecklistMain sem salvar a tarefa
+        startActivity(new Intent(this, ChecklistMain.class));
+        finish(); // Finalize esta atividade
     }
 }

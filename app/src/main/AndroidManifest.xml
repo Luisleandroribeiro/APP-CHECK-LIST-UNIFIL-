@@ -31,7 +31,19 @@
             android:windowSoftInputMode="adjustResize"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".ChecklistMain"
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".AdicionarTarefaActivity"
+            android:exported="true">
+        </activity>
+
 
     </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
 </manifest>

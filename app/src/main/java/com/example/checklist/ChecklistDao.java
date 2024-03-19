@@ -15,14 +15,17 @@ public interface ChecklistDao {
     @Insert
     void insert(ChecklistItem item);
 
+    @Insert
+    long insertUser(User user);
+
     @Update
     void update(ChecklistItem item);
 
     @Query("DELETE FROM checklist_items WHERE id = :itemId")
     void delete(int itemId);
 
-    @Insert
-    void insertUser(User user);
+    @Query("SELECT id FROM users WHERE username = :username AND password = :password")
+    int getUserIdByUsernameAndPassword(String username, String password);
 
     @Query("SELECT COUNT(*) FROM users WHERE username = :username")
     int getUserCountByUsername(String username);

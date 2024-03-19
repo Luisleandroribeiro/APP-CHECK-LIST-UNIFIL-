@@ -76,9 +76,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private class RegisterAsyncTask extends AsyncTask<String, Void, Void> {
+    private class RegisterAsyncTask extends AsyncTask<String, Void, Long> {
         @Override
-        protected Void doInBackground(String... params) {
+        protected Long doInBackground(String... params) {
             String username = params[0];
             String email = params[1];
             String password = params[2];
@@ -101,23 +101,40 @@ public class RegisterActivity extends AppCompatActivity {
             User newUser = new User(username, email, password);
 
             // Inserir o novo usuário no banco de dados usando o DAO correspondente
-            checklistDao.insertUser(newUser);
+            long userId = checklistDao.insertUser(newUser);
 
-            // Exibir uma mensagem de sucesso
-            showToastOnUiThread("Registro bem-sucedido");
+            // Retornar o ID do novo usuário
+            return userId;
+        }
+        // Método para obter o ID do usuário atual
+        private int getUserId(String username, String password) {
+            return checklistDao.getUserIdByUsernameAndPassword(username, password);
+        }
 
-            // Redirecionar o usuário para a tela de login
-            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-            // Encerrar esta atividade para evitar que o usuário volte para a tela de registro ao pressionar o botão Voltar
-            finish();
+        @Override
+        protected void onPostExecute(Long userId) {
+            if (userId != null && userId != -1L) {
+                // Atualizar o ID do usuário com o valor retornado pelo DAO
+                User newUser = new User(usernameEditText.getText().toString().trim(),
+                        emailEditText.getText().toString().trim(),
+                        passwordEditText.getText().toString());
+                newUser.setId(userId.intValue());
 
-            // Adicionar logs para verificar se os dados estão sendo inseridos corretamente no banco de dados
-            Log.d("RegisterActivity", "Novo usuário registrado:");
-            Log.d("RegisterActivity", "Nome de usuário: " + newUser.getUsername());
-            Log.d("RegisterActivity", "Email: " + newUser.getEmail());
-            Log.d("RegisterActivity", "Senha: " + newUser.getPassword());
+                // Exibir uma mensagem de sucesso
+                showToastOnUiThread("Registro bem-sucedido");
 
-            return null;
+                // Redirecionar o usuário para a tela de login
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+                // Encerrar esta atividade para evitar que o usuário volte para a tela de registro ao pressionar o botão Voltar
+                finish();
+
+                // Adicionar logs para verificar se os dados estão sendo inseridos corretamente no banco de dados
+                Log.d("RegisterActivity", "Novo usuário registrado:");
+                Log.d("RegisterActivity", "ID do usuário: " + newUser.getId());
+                Log.d("RegisterActivity", "Nome de usuário: " + newUser.getUsername());
+                Log.d("RegisterActivity", "Email: " + newUser.getEmail());
+                Log.d("RegisterActivity", "Senha: " + newUser.getPassword());
+            }
         }
 
         private void showToastOnUiThread(final String message) {
