@@ -12,7 +12,7 @@ import java.util.List;
 public class TarefaDAO extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "tarefas.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String TABLE_NAME = "tarefas";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITULO = "titulo";
@@ -20,6 +20,9 @@ public class TarefaDAO extends SQLiteOpenHelper {
     private static final String COLUMN_DATA = "data";
     private static final String COLUMN_HORA = "hora";
     private static final String COLUMN_DESCRICAO = "descricao";
+
+    private static final String COLUMN_USER_ID = "user_id";
+
 
     public TarefaDAO(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,9 +36,11 @@ public class TarefaDAO extends SQLiteOpenHelper {
                 COLUMN_SUBTITULO + " TEXT, " +
                 COLUMN_DATA + " TEXT, " +
                 COLUMN_HORA + " TEXT, " +
-                COLUMN_DESCRICAO + " TEXT)";
+                COLUMN_DESCRICAO + " TEXT, " +
+                COLUMN_USER_ID + " INTEGER)"; // Adicionando a coluna user_id à tabela
         db.execSQL(query);
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -43,7 +48,7 @@ public class TarefaDAO extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long inserirTarefa(Tarefa tarefa) {
+    public long inserirTarefa(Tarefa tarefa, int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_TITULO, tarefa.getTitulo());
@@ -51,15 +56,18 @@ public class TarefaDAO extends SQLiteOpenHelper {
         values.put(COLUMN_DATA, tarefa.getData());
         values.put(COLUMN_HORA, tarefa.getHora());
         values.put(COLUMN_DESCRICAO, tarefa.getDescricao());
-        long result = db.insert(TABLE_NAME, null, values);
+        values.put(COLUMN_USER_ID, userId); // Adicione o ID do usuário ao ContentValues
+        long resultado = db.insert(TABLE_NAME, null, values);
         db.close();
-        return result;
+        return resultado;
     }
 
-    public List<Tarefa> obterTodasTarefas() {
+
+    public List<Tarefa> obterTarefasPorUsuario(int userId) {
         List<Tarefa> listaTarefas = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USER_ID + " = ?",
+                new String[]{String.valueOf(userId)});
 
         if (cursor.moveToFirst()) {
             do {

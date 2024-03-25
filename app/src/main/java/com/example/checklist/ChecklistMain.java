@@ -2,6 +2,7 @@ package com.example.checklist;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,11 +19,15 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
     private ListView listViewTarefas;
     private List<Tarefa> listaTarefas;
     private TarefaAdapter adapter; // Alteração para o TarefaAdapter
+    private int userId; // Variável de instância para armazenar o ID do usuário
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
+        userId = getIntent().getIntExtra("USER_ID", -1);
+        Log.d("ChecklistMain", "User ID received: " + userId);
 
         // Inicializa a lista de tarefas
         listaTarefas = new ArrayList<>();
@@ -40,7 +45,7 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
     private void carregarTarefasDoBancoDeDados() {
         TarefaDAO tarefaDAO = new TarefaDAO(this);
         listaTarefas.clear(); // Limpa a lista para evitar duplicatas
-        listaTarefas.addAll(tarefaDAO.obterTodasTarefas()); // Adiciona todas as tarefas do banco de dados
+        listaTarefas.addAll(tarefaDAO.obterTarefasPorUsuario(userId)); // Obtenha apenas as tarefas do usuário
         adapter.notifyDataSetChanged(); // Notifica o TarefaAdapter que os dados foram alterados
 
         // Define a visibilidade do ListView com base na presença de tarefas
@@ -50,6 +55,7 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
             listViewTarefas.setVisibility(View.VISIBLE); // Se houver tarefas, exibe o ListView
         }
     }
+
 
     public void showPopupMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);
@@ -62,8 +68,11 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
     public boolean onMenuItemClick(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.addTask) {
-            // Iniciar a atividade de adicionar tarefa quando o item for clicado
-            startActivity(new Intent(this, AdicionarTarefaActivity.class));
+            // Iniciar a AdicionarTarefaActivity e passar o ID do usuário como extra
+            Intent intent = new Intent(this, AdicionarTarefaActivity.class);
+            intent.putExtra("USER_ID", userId); // Passa o ID do usuário para a próxima atividade
+            Log.d("ChecklistMainMenu", "User ID in menu: " + userId); // Log para verificar se o userId está sendo passado para o menu
+            startActivity(intent);
             return true;
         } else if (itemId == R.id.completeTask) {
             // Implementar ação para concluir tarefa
@@ -74,4 +83,11 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
         }
         return false;
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        carregarTarefasDoBancoDeDados();
+        Log.d("ChecklistMain", "Total de tarefas: " + listaTarefas.size());
+    }
+
 }

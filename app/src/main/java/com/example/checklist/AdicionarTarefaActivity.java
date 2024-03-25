@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -20,11 +21,15 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
     private EditText tituloEditText, subtituloEditText, descricaoEditText;
     private EditText dataEditText, horaEditText;
     private Button cancelarButton, salvarButton;
+    private int userId; // Variável de instância para armazenar o ID do usuário
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_tarefa);
+        userId = getIntent().getIntExtra("USER_ID", -1); // -1 é o valor padrão caso não haja nenhum extra
+        Log.d("AdicionarTarefa", "User ID received: " + userId);
 
         // Inicializa os EditTexts e os botões
         tituloEditText = findViewById(R.id.tituloEditText);
@@ -119,17 +124,23 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 
         // Salve a tarefa no banco de dados
         TarefaDAO tarefaDAO = new TarefaDAO(this);
-        long resultado = tarefaDAO.inserirTarefa(tarefa);
+        long resultado = tarefaDAO.inserirTarefa(tarefa, userId); // Passa o userId ao inserir a tarefa
 
         if (resultado != -1) {
             Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show();
-            // Vá para a tela de ChecklistMain
-            startActivity(new Intent(this, ChecklistMain.class));
-            finish(); // Finalize esta atividade
+
+            // Após salvar a tarefa com sucesso
+            Intent intent = new Intent(this, ChecklistMain.class);
+            intent.putExtra("USER_ID", userId); // Passa o ID do usuário para a ChecklistMain
+            startActivity(intent);
+            finish(); // Encerra esta atividade
         } else {
             Toast.makeText(this, "Falha ao salvar a tarefa", Toast.LENGTH_SHORT).show();
         }
+
     }
+
+
 
     // Método para cancelar a adição da tarefa
     private void cancelarAdicaoTarefa() {

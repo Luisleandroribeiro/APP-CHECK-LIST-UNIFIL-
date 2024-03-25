@@ -3,6 +3,7 @@ package com.example.checklist;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -55,21 +56,28 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
                 } else {
                     // Executar a autenticação em uma thread separada
-                    new AsyncTask<Void, Void, Boolean>() {
+                    // Executar a autenticação em uma thread separada
+                    new AsyncTask<Void, Void, Integer>() {
                         @Override
-                        protected Boolean doInBackground(Void... voids) {
+                        protected Integer doInBackground(Void... voids) {
                             // Autenticar o usuário em uma thread separada
                             return authenticateUser(username, password);
                         }
 
+
+
+                        // No método LoginActivity
                         @Override
-                        protected void onPostExecute(Boolean isAuthenticated) {
-                            super.onPostExecute(isAuthenticated);
-                            if (isAuthenticated) {
+                        protected void onPostExecute(Integer userId) {
+                            super.onPostExecute(userId);
+                            if (userId != null && userId > 0) {
                                 // Usuário autenticado com sucesso, iniciar a próxima atividade
                                 Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                                // Inicia a atividade de ChecklistMain
+                                // Log para verificar se o ID do usuário está sendo salvo corretamente
+                                Log.d("LoginActivity", "User ID: " + userId); // Adiciona um log com o ID do usuário
+                                // Inicia a atividade de ChecklistMain e passa o ID do usuário como extra
                                 Intent intent = new Intent(LoginActivity.this, ChecklistMain.class);
+                                intent.putExtra("USER_ID", userId); // Passa o ID do usuário para a próxima atividade
                                 startActivity(intent);
                                 finish(); // Finaliza a LoginActivity após o login bem-sucedido
                             } else {
@@ -77,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
                             }
                         }
+
                     }.execute();
                 }
             }
@@ -84,9 +93,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // Método para autenticar o usuário (substitua este método com sua própria lógica de autenticação)
-    private boolean authenticateUser(String username, String password) {
+    // Método para autenticar o usuário (substitua este método com sua própria lógica de autenticação)
+    private Integer authenticateUser(String username, String password) {
         // Consultar o banco de dados para verificar se o usuário existe e a senha está correta
-        int userCount = checklistDao.getUserCountByUsernameAndPassword(username, password);
-        return userCount > 0;
+        return checklistDao.getUserIdByUsernameAndPassword(username, password);
     }
 }
