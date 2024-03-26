@@ -10,63 +10,44 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/checklistIcon"
+            android:id="@+id/checklistIconfinish"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/iconmenu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:onClick="showMenu"
-            android:contentDescription="Menu de opções" />
+            android:layout_marginEnd="8dp"/>
 
         <TextView
-            android:id="@+id/titleTextView"
+            android:id="@+id/titleTextViewfinish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Checklist - Abertos"
+            android:text="Checklist - Finalizados"
             android:textColor="#4FA983"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/checklistIcon"
-            app:layout_constraintStart_toEndOf="@id/checklistIcon"
-            app:layout_constraintTop_toTopOf="@id/checklistIcon" />
+            app:layout_constraintBottom_toBottomOf="@id/checklistIconfinish"
+            app:layout_constraintStart_toEndOf="@id/checklistIconfinish"
+            app:layout_constraintTop_toTopOf="@id/checklistIconfinish" />
 
         <!-- ListView para exibir as tarefas -->
         <ListView
-            android:id="@+id/listViewTarefas"
+            android:id="@+id/listViewTarefasfinish"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:layout_constraintBottom_toTopOf="@id/guideline_bottom" />
+            app:layout_constraintTop_toBottomOf="@id/titleTextViewfinish"
+            app:layout_constraintBottom_toTopOf="@id/guideline_bottomfinish" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_bottom"
+            android:id="@+id/guideline_bottomfinish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Imagem no centro inferior -->
-    <ImageView
-        android:id="@+id/imageBottom"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/iconadicionar"
-        app:layout_anchor="@id/listViewTarefas"
-        app:layout_anchorGravity="bottom|end"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="openAdicionarTarefaActivity"
-        android:contentDescription="Adicionar Tarefa" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

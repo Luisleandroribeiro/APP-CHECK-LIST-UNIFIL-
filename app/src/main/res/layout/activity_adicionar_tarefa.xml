@@ -110,9 +110,18 @@
             android:id="@+id/cancelarButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="173dp"
-            android:backgroundTint="#4FA983"
+            android:backgroundTint="#9A9A9A"
             android:text="Cancelar" />
+
+        <Button
+            android:id="@+id/deletarButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#E37B00"
+            android:text="Deletar"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="35dp" />
+
         <Button
             android:id="@+id/salvarButton"
             android:layout_width="wrap_content"

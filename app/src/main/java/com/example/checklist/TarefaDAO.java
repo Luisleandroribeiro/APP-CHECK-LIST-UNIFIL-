@@ -86,4 +86,20 @@ public class TarefaDAO extends SQLiteOpenHelper {
         db.close();
         return listaTarefas;
     }
+
+    public int atualizarTarefa(Tarefa tarefa) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TITULO, tarefa.getTitulo());
+        values.put(COLUMN_SUBTITULO, tarefa.getSubtitulo());
+        values.put(COLUMN_DATA, tarefa.getData());
+        values.put(COLUMN_HORA, tarefa.getHora());
+        values.put(COLUMN_DESCRICAO, tarefa.getDescricao());
+        return db.update(TABLE_NAME, values, COLUMN_ID + " = ?",
+                new String[]{String.valueOf(tarefa.getId())});
+    }
+    public int deletarTarefa(int tarefaId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("tarefas", "id = ?", new String[]{String.valueOf(tarefaId)});
+    }
 }

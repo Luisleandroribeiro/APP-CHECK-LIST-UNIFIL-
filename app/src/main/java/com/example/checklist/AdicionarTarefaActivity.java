@@ -20,18 +20,17 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 
     private EditText tituloEditText, subtituloEditText, descricaoEditText;
     private EditText dataEditText, horaEditText;
-    private Button cancelarButton, salvarButton;
-    private int userId; // Variável de instância para armazenar o ID do usuário
-
+    private Button cancelarButton, salvarButton, deletarButton;
+    private int userId;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar_tarefa);
-        userId = getIntent().getIntExtra("USER_ID", -1); // -1 é o valor padrão caso não haja nenhum extra
-        Log.d("AdicionarTarefa", "User ID received: " + userId);
+        userId = getIntent().getIntExtra("USER_ID", -1);
+        intent = getIntent();
 
-        // Inicializa os EditTexts e os botões
         tituloEditText = findViewById(R.id.tituloEditText);
         subtituloEditText = findViewById(R.id.subtituloEditText);
         descricaoEditText = findViewById(R.id.descricaoEditText);
@@ -39,8 +38,8 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         horaEditText = findViewById(R.id.horaEditText);
         cancelarButton = findViewById(R.id.cancelarButton);
         salvarButton = findViewById(R.id.salvarButton);
+        deletarButton = findViewById(R.id.deletarButton);
 
-        // Define os listeners de clique para os botões
         cancelarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +54,6 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             }
         });
 
-        // Define os listeners de clique nos EditTexts de data e hora
         dataEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,9 +67,22 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
                 mostrarTimePicker();
             }
         });
+
+        if (intent.hasExtra("TAREFA_ID")) {
+            deletarButton.setVisibility(View.VISIBLE);
+            deletarButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deletarTarefa();
+                }
+            });
+        } else {
+            deletarButton.setVisibility(View.INVISIBLE);
+        }
+
+        preencherCamposComDadosDaTarefa();
     }
 
-    // Método para mostrar o DatePicker
     private void mostrarDatePicker() {
         final Calendar calendario = Calendar.getInstance();
         int ano = calendario.get(Calendar.YEAR);
@@ -89,7 +100,6 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    // Método para mostrar o TimePicker
     private void mostrarTimePicker() {
         final Calendar calendario = Calendar.getInstance();
         int hora = calendario.get(Calendar.HOUR_OF_DAY);
@@ -99,7 +109,6 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        // Formatar a hora e o minuto com dois dígitos
                         String horaFormatada = String.format("%02d", hourOfDay);
                         String minutoFormatado = String.format("%02d", minute);
                         String horaSelecionada = horaFormatada + ":" + minutoFormatado;
@@ -109,43 +118,81 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    private void preencherCamposComDadosDaTarefa() {
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("TITULO") && intent.hasExtra("SUBTITULO")
+                && intent.hasExtra("DATA") && intent.hasExtra("HORA") && intent.hasExtra("DESCRICAO")) {
+            tituloEditText.setText(intent.getStringExtra("TITULO"));
+            subtituloEditText.setText(intent.getStringExtra("SUBTITULO"));
+            dataEditText.setText(intent.getStringExtra("DATA"));
+            horaEditText.setText(intent.getStringExtra("HORA"));
+            descricaoEditText.setText(intent.getStringExtra("DESCRICAO"));
+        }
+    }
 
-    // Método para salvar a tarefa
     private void salvarTarefa() {
-        // Obtenha os dados da tarefa dos campos de entrada
         String titulo = tituloEditText.getText().toString();
         String subtitulo = subtituloEditText.getText().toString();
         String data = dataEditText.getText().toString();
         String hora = horaEditText.getText().toString();
         String descricao = descricaoEditText.getText().toString();
 
-        // Crie um objeto de tarefa
-        Tarefa tarefa = new Tarefa(titulo, subtitulo, data, hora, descricao);
-
-        // Salve a tarefa no banco de dados
-        TarefaDAO tarefaDAO = new TarefaDAO(this);
-        long resultado = tarefaDAO.inserirTarefa(tarefa, userId); // Passa o userId ao inserir a tarefa
-
-        if (resultado != -1) {
-            Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show();
-
-            // Após salvar a tarefa com sucesso
-            Intent intent = new Intent(this, ChecklistMain.class);
-            intent.putExtra("USER_ID", userId); // Passa o ID do usuário para a ChecklistMain
-            startActivity(intent);
-            finish(); // Encerra esta atividade
-        } else {
-            Toast.makeText(this, "Falha ao salvar a tarefa", Toast.LENGTH_SHORT).show();
+        if (titulo.isEmpty() || subtitulo.isEmpty() || data.isEmpty() || hora.isEmpty() || descricao.isEmpty()) {
+            Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
+            return;
         }
 
+        Tarefa tarefa = new Tarefa(titulo, subtitulo, data, hora, descricao);
+
+        if (!intent.hasExtra("TAREFA_ID")) {
+            TarefaDAO tarefaDAO = new TarefaDAO(this);
+            long resultado = tarefaDAO.inserirTarefa(tarefa, userId);
+            if (resultado != -1) {
+                Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Falha ao salvar a tarefa", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            int tarefaId = intent.getIntExtra("TAREFA_ID", -1);
+            if (tarefaId != -1) {
+                tarefa.setId(tarefaId);
+                TarefaDAO tarefaDAO = new TarefaDAO(this);
+                int linhasAfetadas = tarefaDAO.atualizarTarefa(tarefa);
+                if (linhasAfetadas > 0) {
+                    Toast.makeText(this, "Tarefa atualizada com sucesso!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Falha ao atualizar a tarefa", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
+        Intent intent = new Intent(this, ChecklistMain.class);
+        intent.putExtra("USER_ID", userId);
+        startActivity(intent);
+        finish();
     }
 
-
-
-    // Método para cancelar a adição da tarefa
     private void cancelarAdicaoTarefa() {
-        // Volte para a tela de ChecklistMain sem salvar a tarefa
-        startActivity(new Intent(this, ChecklistMain.class));
-        finish(); // Finalize esta atividade
+        Intent intent = new Intent(this, ChecklistMain.class);
+        intent.putExtra("USER_ID", userId);
+        startActivity(intent);
+        finish();
+    }
+
+    private void deletarTarefa() {
+        int tarefaId = intent.getIntExtra("TAREFA_ID", -1);
+        if (tarefaId != -1) {
+            TarefaDAO tarefaDAO = new TarefaDAO(this);
+            int linhasAfetadas = tarefaDAO.deletarTarefa(tarefaId);
+            if (linhasAfetadas > 0) {
+                Toast.makeText(this, "Tarefa deletada com sucesso!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Falha ao deletar a tarefa", Toast.LENGTH_SHORT).show();
+            }
+            Intent intent = new Intent(this, ChecklistMain.class);
+            intent.putExtra("USER_ID", userId);
+            startActivity(intent);
+            finish();
+        }
     }
 }

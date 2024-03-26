@@ -11,8 +11,11 @@ import java.util.List;
 
 public class TarefaAdapter extends ArrayAdapter<Tarefa> {
 
+    private TarefaDAO tarefaDAO;
+
     public TarefaAdapter(Context context, List<Tarefa> tarefas) {
         super(context, 0, tarefas);
+        tarefaDAO = new TarefaDAO(context);
     }
 
     @Override
@@ -29,7 +32,14 @@ public class TarefaAdapter extends ArrayAdapter<Tarefa> {
         TextView tituloTextView = convertView.findViewById(R.id.titleTextView);
         tituloTextView.setText(tarefa.getTitulo());
 
-        // Configure os outros elementos da tarefa aqui, conforme necessário
+        TextView subtitleTextView = convertView.findViewById(R.id.subtitleTextView);
+        subtitleTextView.setText(tarefa.getSubtitulo());
+
+        TextView dateTextView = convertView.findViewById(R.id.dateTextView);
+        dateTextView.setText(tarefa.getData());
+
+        TextView deadlineTextView = convertView.findViewById(R.id.deadlineTextView);
+        deadlineTextView.setText(tarefa.getHora());
 
         return convertView;
     }
