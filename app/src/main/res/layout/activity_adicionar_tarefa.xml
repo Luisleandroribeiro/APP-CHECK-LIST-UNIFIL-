@@ -1,133 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-    <!-- Título -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Título:"
-        android:textSize="18sp"
-        android:textColor="#3D7268"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/tituloEditText"
+    <ScrollView
         android:layout_width="match_parent"
-        android:minHeight="48dp"
-        android:layout_height="wrap_content"
-        android:hint="Insira o título da tarefa" />
+        android:layout_height="match_parent">
 
-    <!-- Subtítulo -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Subtítulo:"
-        android:textColor="#3D7268"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp" />
-
-    <EditText
-        android:id="@+id/subtituloEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:minHeight="48dp"
-        android:hint="Insira o subtítulo da tarefa" />
-
-    <!-- Data e Hora -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Data e Hora de Conclusão:"
-        android:textColor="#3D7268"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/dataEditText"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_weight="1"
-            android:hint="Data"
-            android:inputType="none"
-            android:focusable="false"
-            android:onClick="mostrarDatePicker" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <EditText
-            android:id="@+id/horaEditText"
-            android:layout_width="0dp"
-            android:minHeight="48dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Hora"
-            android:inputType="none"
-            android:focusable="false"
-            android:onClick="mostrarTimePicker" />
-    </LinearLayout>
+            <!-- Título -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Título:"
+                android:textSize="18sp"
+                android:textColor="#3D7268"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/tituloEditText"
+                android:layout_width="match_parent"
+                android:minHeight="48dp"
+                android:layout_height="wrap_content"
+                android:hint="Insira o título da tarefa" />
+
+            <!-- Subtítulo -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subtítulo:"
+                android:textColor="#3D7268"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp" />
+
+            <EditText
+                android:id="@+id/subtituloEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:minHeight="48dp"
+                android:hint="Insira o subtítulo da tarefa" />
+
+            <!-- Data e Hora -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data e Hora de Conclusão:"
+                android:textColor="#3D7268"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/dataEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_weight="1"
+                    android:hint="Data"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:onClick="mostrarDatePicker" />
+
+                <EditText
+                    android:id="@+id/horaEditText"
+                    android:layout_width="0dp"
+                    android:minHeight="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Hora"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:onClick="mostrarTimePicker" />
+            </LinearLayout>
 
 
-    <!-- Descrição -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Descrição:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="#3D7268"
-        android:layout_marginTop="20dp" />
+            <!-- Descrição -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descrição:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#3D7268"
+                android:layout_marginTop="20dp" />
 
-    <EditText
-        android:id="@+id/descricaoEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Insira a descrição da tarefa"
-        android:layout_marginTop="5dp"
-        android:gravity="top"
-        android:minLines="3" />
+            <EditText
+                android:id="@+id/descricaoEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Insira a descrição da tarefa"
+                android:layout_marginTop="5dp"
+                android:gravity="top"
+                android:minLines="3" />
 
-    <!-- Botões -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="end"
-        android:layout_marginTop="16dp">
+            <!-- Botões -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginTop="16dp">
 
-        <Button
-            android:id="@+id/cancelarButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#9A9A9A"
-            android:text="Cancelar" />
+                <Button
+                    android:id="@+id/cancelarButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#9A9A9A"
+                    android:text="Cancelar" />
 
-        <Button
-            android:id="@+id/deletarButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#E37B00"
-            android:text="Deletar"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp" />
+                <Button
+                    android:id="@+id/deletarButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#E37B00"
+                    android:text="Deletar"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginRight="35dp" />
 
-        <Button
-            android:id="@+id/salvarButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Salvar"
-            android:backgroundTint="#3D7268" />
-    </LinearLayout>
+                <Button
+                    android:id="@+id/salvarButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salvar"
+                    android:backgroundTint="#3D7268" />
+            </LinearLayout>
 
-</LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Imagem no centro inferior -->
+    <ImageView
+        android:id="@+id/imagemIconFinalizar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/iconfinalizar"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="340dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="finalizarTarefa"
+        android:contentDescription="Finalizar Tarefa" />
+
+</RelativeLayout>

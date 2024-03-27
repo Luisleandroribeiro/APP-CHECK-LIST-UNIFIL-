@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -93,8 +94,10 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
     // Método para carregar as tarefas do banco de dados e exibi-las na lista
     private void carregarTarefasDoBancoDeDados() {
         TarefaDAO tarefaDAO = new TarefaDAO(this);
+
+        // Obtenha apenas as tarefas não finalizadas do usuário
         listaTarefas.clear(); // Limpa a lista para evitar duplicatas
-        listaTarefas.addAll(tarefaDAO.obterTarefasPorUsuario(userId)); // Obtenha apenas as tarefas do usuário
+        listaTarefas.addAll(tarefaDAO.obterTarefasNaoFinalizadasPorUsuario(userId)); // Alterado para obter apenas tarefas não finalizadas
         adapter.notifyDataSetChanged(); // Notifica o TarefaAdapter que os dados foram alterados
 
         // Define a visibilidade do ListView com base na presença de tarefas
@@ -104,6 +107,7 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
             listViewTarefas.setVisibility(View.VISIBLE); // Se houver tarefas, exibe o ListView
         }
     }
+
 
 
     public void openAdicionarTarefaActivity(View view) {
@@ -120,5 +124,7 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
         carregarTarefasDoBancoDeDados();
         Log.d("ChecklistMain", "Total de tarefas: " + listaTarefas.size());
     }
+
+
 
 }
