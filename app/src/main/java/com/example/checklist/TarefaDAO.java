@@ -12,7 +12,7 @@ import java.util.List;
 public class TarefaDAO extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "tarefas.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
     private static final String TABLE_NAME = "tarefas";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITULO = "titulo";
@@ -106,10 +106,11 @@ public class TarefaDAO extends SQLiteOpenHelper {
         return db.delete("tarefas", "id = ?", new String[]{String.valueOf(tarefaId)});
     }
     // Método para obter todas as tarefas finalizadas
-    public ArrayList<Tarefa> getTarefasFinalizadas() {
-        ArrayList<Tarefa> tarefasFinalizadas = new ArrayList<>();
+    public List<Tarefa> obterTarefasFinalizadasPorUsuario(int userId) {
+        List<Tarefa> listaTarefas = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_FINALIZADA + " = 1", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USER_ID + " = ? AND " + COLUMN_FINALIZADA + " = 1",
+                new String[]{String.valueOf(userId)});
 
         if (cursor.moveToFirst()) {
             do {
@@ -120,14 +121,16 @@ public class TarefaDAO extends SQLiteOpenHelper {
                 tarefa.setData(cursor.getString(3));
                 tarefa.setHora(cursor.getString(4));
                 tarefa.setDescricao(cursor.getString(5));
-                tarefasFinalizadas.add(tarefa);
+                listaTarefas.add(tarefa);
             } while (cursor.moveToNext());
         }
 
         cursor.close();
         db.close();
-        return tarefasFinalizadas;
+        return listaTarefas;
     }
+
+
     public int marcarComoFinalizada(Tarefa tarefa) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -155,6 +158,8 @@ public class TarefaDAO extends SQLiteOpenHelper {
         cursor.close();
         return listaTarefas;
     }
-
-
 }
+
+
+
+

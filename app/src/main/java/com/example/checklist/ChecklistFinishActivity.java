@@ -11,6 +11,7 @@ import android.widget.PopupMenu;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChecklistFinishActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -28,7 +29,8 @@ public class ChecklistFinishActivity extends AppCompatActivity implements PopupM
         listViewTarefas = findViewById(R.id.listViewTarefasfinish);
         tarefaDAO = new TarefaDAO(this);
 
-        ArrayList<Tarefa> tarefasFinalizadas = tarefaDAO.getTarefasFinalizadas();
+        // Obter apenas as tarefas finalizadas do usuário logado
+        List<Tarefa> tarefasFinalizadas = tarefaDAO.obterTarefasFinalizadasPorUsuario(userId); // Alteração aqui
 
         adapter = new TarefaAdapter(this, tarefasFinalizadas);
         listViewTarefas.setAdapter(adapter);
@@ -47,15 +49,11 @@ public class ChecklistFinishActivity extends AppCompatActivity implements PopupM
                 intent.putExtra("DATA", tarefaSelecionada.getData());
                 intent.putExtra("HORA", tarefaSelecionada.getHora());
                 intent.putExtra("DESCRICAO", tarefaSelecionada.getDescricao());
-
-                // Passando uma flag extra para indicar que estamos vindo da ChecklistFinishActivity
-                intent.putExtra("VINDO_DE_FINALIZADOS", true);
-
                 startActivity(intent);
             }
         });
-
     }
+
 
     public void showMenu(View view) {
         PopupMenu popupMenu = new PopupMenu(this, view);

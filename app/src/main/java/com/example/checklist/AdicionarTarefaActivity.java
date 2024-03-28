@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -98,29 +99,6 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         }
 
         preencherCamposComDadosDaTarefa();
-        verificarExibicaoBotaoFinalizar();
-    }
-
-    private void verificarExibicaoBotaoFinalizar() {
-        // Verifique se a tarefa está marcada como finalizada
-        boolean tarefaFinalizada = intent.getBooleanExtra("FINALIZADA", false);
-
-        // Verifique se a atividade está sendo editada
-        boolean editandoTarefa = intent.hasExtra("TAREFA_ID");
-
-        // Se a tarefa estiver marcada como finalizada e não estiver sendo editada, deixe o botão de finalizar invisível
-        if (tarefaFinalizada && !editandoTarefa) {
-            imagemIconFinalizar.setVisibility(View.GONE);
-        } else {
-            // Caso contrário, deixe o botão de finalizar visível
-            imagemIconFinalizar.setVisibility(View.VISIBLE);
-            imagemIconFinalizar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finalizarAtividade();
-                }
-            });
-        }
     }
 
     private void mostrarDatePicker() {
@@ -167,12 +145,8 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             dataEditText.setText(intent.getStringExtra("DATA"));
             horaEditText.setText(intent.getStringExtra("HORA"));
             descricaoEditText.setText(intent.getStringExtra("DESCRICAO"));
-
-            verificarExibicaoBotaoFinalizar();
         }
     }
-
-
 
     private void salvarTarefa() {
         String titulo = tituloEditText.getText().toString();
@@ -279,4 +253,6 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             Toast.makeText(this, "ID da tarefa inválido", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
