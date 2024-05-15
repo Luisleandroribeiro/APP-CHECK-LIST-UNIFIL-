@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -180,7 +181,11 @@
             android:padding="12dp"
             android:text="I read and accept the Terms Of Use"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_orange_dark"
+            android:clickable="true"
+            android:focusable="true" />
+
 
         <CheckBox
             android:id="@+id/termsOfUseCheckBox"
@@ -212,5 +217,13 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/buttonVoltarRegister"
+            android:layout_width="125px"
+            android:layout_height="125px"
+            android:layout_marginLeft="10px"
+            android:layout_marginTop="20px"
+            app:srcCompat="@drawable/setavoltar" />
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

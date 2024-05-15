@@ -6,11 +6,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -55,6 +53,7 @@ public class ChecklistMain extends AppCompatActivity implements PopupMenu.OnMenu
                 intent.putExtra("DATA", tarefaSelecionada.getData()); // Passa a data da tarefa
                 intent.putExtra("HORA", tarefaSelecionada.getHora()); // Passa a hora da tarefa
                 intent.putExtra("DESCRICAO", tarefaSelecionada.getDescricao()); // Passa a descrição da tarefa
+                intent.putExtra("TAG", tarefaSelecionada.getTag());
 
                 startActivity(intent);
             }

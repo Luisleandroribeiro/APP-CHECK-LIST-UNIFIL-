@@ -1,7 +1,9 @@
 package com.example.checklist;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +28,8 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
     private int userId;
     private Intent intent;
     private boolean tarefaAdicionada = false; // Variável para controlar se a tarefa foi adicionada
-
+    private EditText tagsEditText;
+    private String[] opcoesTags = {"Urgente", "Importante", "Pessoal", "Trabalho", "Estudo", "Saúde", "Lazer", "Financeiro", "Viagem", "Social", "Projetos", "Compras", "Alimentação", "Limpeza", "Exercício", "Lembrete", "Aniversário", "Documentos", "Tecnologia", "Criativo"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         userId = getIntent().getIntExtra("USER_ID", -1);
         intent = getIntent();
 
+        tagsEditText = findViewById(R.id.tagsEditText);
         tituloEditText = findViewById(R.id.tituloEditText);
         subtituloEditText = findViewById(R.id.subtituloEditText);
         descricaoEditText = findViewById(R.id.descricaoEditText);
@@ -43,7 +47,13 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         salvarButton = findViewById(R.id.salvarButton);
         deletarButton = findViewById(R.id.deletarButton);
         imagemIconFinalizar = findViewById(R.id.imagemIconFinalizar);
-
+        // Configura um OnClickListener para exibir o diálogo de lista quando clicado
+        tagsEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exibirDialogoListaTags();
+            }
+        });
         // Verifique se a tarefa foi adicionada
         // Por exemplo, se você estiver recuperando essa informação de algum lugar, como um banco de dados
         if (tarefaAdicionada || intent.hasExtra("TAREFA_ID")) {
@@ -145,22 +155,45 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             dataEditText.setText(intent.getStringExtra("DATA"));
             horaEditText.setText(intent.getStringExtra("HORA"));
             descricaoEditText.setText(intent.getStringExtra("DESCRICAO"));
+            tagsEditText.setText(intent.getStringExtra("TAG"));
+
+            Log.d("RecuperarTag", "Tag: " + intent.getStringExtra("TAG"));
+
         }
     }
+    private void exibirDialogoListaTags() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecione uma Tag");
 
+        // Adicione as opções de tags ao diálogo de lista
+        builder.setItems(opcoesTags, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Obtém a tag selecionada pelo usuário
+                String tagSelecionada = opcoesTags[which];
+
+                // Insira a tag selecionada no EditText
+                tagsEditText.setText(tagSelecionada);
+            }
+        });
+
+        // Cria e exibe o diálogo de lista
+        builder.create().show();
+    }
     private void salvarTarefa() {
         String titulo = tituloEditText.getText().toString();
         String subtitulo = subtituloEditText.getText().toString();
         String data = dataEditText.getText().toString();
         String hora = horaEditText.getText().toString();
         String descricao = descricaoEditText.getText().toString();
-
-        if (titulo.isEmpty() || subtitulo.isEmpty() || data.isEmpty() || hora.isEmpty() || descricao.isEmpty()) {
+        String tag = tagsEditText.getText().toString();
+        Log.d("SalvarTarefa", "Tag antes de salvar: " + tag);
+        if (titulo.isEmpty() || subtitulo.isEmpty() || data.isEmpty() || hora.isEmpty() || descricao.isEmpty() || tag.isEmpty()) {
             Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Tarefa tarefa = new Tarefa(titulo, subtitulo, data, hora, descricao);
+        Tarefa tarefa = new Tarefa(titulo, subtitulo, data, hora, descricao, tag);
 
         if (!intent.hasExtra("TAREFA_ID")) {
             TarefaDAO tarefaDAO = new TarefaDAO(this);
@@ -168,6 +201,7 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             if (resultado != -1) {
                 Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show();
             } else {
+                Log.e("AdicionarTarefaActivity", "Erro ao salvar a tarefa no banco de dados");
                 Toast.makeText(this, "Falha ao salvar a tarefa", Toast.LENGTH_SHORT).show();
             }
         } else {

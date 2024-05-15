@@ -7,21 +7,30 @@ public class Tarefa {
     private String data;
     private String hora;
     private String descricao;
+    private String tag;
 
     public Tarefa() {
         // Construtor vazio
     }
 
-    public Tarefa(String titulo, String subtitulo, String data, String hora, String descricao) {
+    public Tarefa(String titulo, String subtitulo, String data, String hora, String descricao, String tag) {
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.data = data;
         this.hora = hora;
         this.descricao = descricao;
+        this.tag = tag;
+
     }
 
     // Getters e setters para os campos da tarefa
+    public String getTag() {
+        return tag;
+    }
 
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
     public int getId() {
         return id;
     }

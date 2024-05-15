@@ -49,6 +49,7 @@ public class ChecklistFinishActivity extends AppCompatActivity implements PopupM
                 intent.putExtra("DATA", tarefaSelecionada.getData());
                 intent.putExtra("HORA", tarefaSelecionada.getHora());
                 intent.putExtra("DESCRICAO", tarefaSelecionada.getDescricao());
+                intent.putExtra("TAG", tarefaSelecionada.getTag());
                 startActivity(intent);
             }
         });

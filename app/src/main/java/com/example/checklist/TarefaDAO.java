@@ -12,7 +12,7 @@ import java.util.List;
 public class TarefaDAO extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "tarefas.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 7;
     private static final String TABLE_NAME = "tarefas";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_TITULO = "titulo";
@@ -20,6 +20,7 @@ public class TarefaDAO extends SQLiteOpenHelper {
     private static final String COLUMN_DATA = "data";
     private static final String COLUMN_HORA = "hora";
     private static final String COLUMN_DESCRICAO = "descricao";
+    private static final String COLUMN_TAG = "tag";
     private static final String COLUMN_FINALIZADA = "finalizada";
 
     private static final String COLUMN_USER_ID = "user_id";
@@ -38,6 +39,7 @@ public class TarefaDAO extends SQLiteOpenHelper {
                 COLUMN_DATA + " TEXT, " +
                 COLUMN_HORA + " TEXT, " +
                 COLUMN_DESCRICAO + " TEXT, " +
+                COLUMN_TAG + " TEXT," +
                 COLUMN_FINALIZADA + " INTEGER DEFAULT 0, " + // Adicione a coluna COLUMN_FINALIZADA
                 COLUMN_USER_ID + " INTEGER)";
         db.execSQL(query);
@@ -59,35 +61,11 @@ public class TarefaDAO extends SQLiteOpenHelper {
         values.put(COLUMN_DATA, tarefa.getData());
         values.put(COLUMN_HORA, tarefa.getHora());
         values.put(COLUMN_DESCRICAO, tarefa.getDescricao());
-        values.put(COLUMN_USER_ID, userId); // Adicione o ID do usuário ao ContentValues
+        values.put(COLUMN_TAG, tarefa.getTag()); // Adicione a tag à ContentValues
+        values.put(COLUMN_USER_ID, userId);
         long resultado = db.insert(TABLE_NAME, null, values);
         db.close();
         return resultado;
-    }
-
-
-    public List<Tarefa> obterTarefasPorUsuario(int userId) {
-        List<Tarefa> listaTarefas = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_USER_ID + " = ?",
-                new String[]{String.valueOf(userId)});
-
-        if (cursor.moveToFirst()) {
-            do {
-                Tarefa tarefa = new Tarefa();
-                tarefa.setId(cursor.getInt(0));
-                tarefa.setTitulo(cursor.getString(1));
-                tarefa.setSubtitulo(cursor.getString(2));
-                tarefa.setData(cursor.getString(3));
-                tarefa.setHora(cursor.getString(4));
-                tarefa.setDescricao(cursor.getString(5));
-                listaTarefas.add(tarefa);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return listaTarefas;
     }
 
     public int atualizarTarefa(Tarefa tarefa) {
@@ -98,6 +76,7 @@ public class TarefaDAO extends SQLiteOpenHelper {
         values.put(COLUMN_DATA, tarefa.getData());
         values.put(COLUMN_HORA, tarefa.getHora());
         values.put(COLUMN_DESCRICAO, tarefa.getDescricao());
+        values.put(COLUMN_TAG, tarefa.getTag());
         return db.update(TABLE_NAME, values, COLUMN_ID + " = ?",
                 new String[]{String.valueOf(tarefa.getId())});
     }
@@ -121,6 +100,7 @@ public class TarefaDAO extends SQLiteOpenHelper {
                 tarefa.setData(cursor.getString(3));
                 tarefa.setHora(cursor.getString(4));
                 tarefa.setDescricao(cursor.getString(5));
+                tarefa.setTag(cursor.getString(6));
                 listaTarefas.add(tarefa);
             } while (cursor.moveToNext());
         }
@@ -152,6 +132,7 @@ public class TarefaDAO extends SQLiteOpenHelper {
                 tarefa.setData(cursor.getString(3));
                 tarefa.setHora(cursor.getString(4));
                 tarefa.setDescricao(cursor.getString(5));
+                tarefa.setTag(cursor.getString(6));
                 listaTarefas.add(tarefa);
             } while (cursor.moveToNext());
         }

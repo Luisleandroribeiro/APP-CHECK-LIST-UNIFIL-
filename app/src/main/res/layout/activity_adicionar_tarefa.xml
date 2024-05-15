@@ -105,6 +105,25 @@
                 android:layout_marginTop="5dp"
                 android:gravity="top"
                 android:minLines="3" />
+            <!-- Tags -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Marcação:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#3D7268"
+                android:layout_marginTop="20dp" />
+
+
+            <EditText
+                android:id="@+id/tagsEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Insira a marcação desejada"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
 
             <!-- Botões -->
             <LinearLayout
