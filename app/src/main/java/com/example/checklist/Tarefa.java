@@ -8,29 +8,22 @@ public class Tarefa {
     private String hora;
     private String descricao;
     private String tag;
+    private boolean isFavorited;
 
-    public Tarefa() {
-        // Construtor vazio
-    }
+    // Construtores, getters e setters
 
-    public Tarefa(String titulo, String subtitulo, String data, String hora, String descricao, String tag) {
+    public Tarefa(String titulo, String subtitulo, String data, String hora, String descricao, String tag, boolean isFavorited) {
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.data = data;
         this.hora = hora;
         this.descricao = descricao;
         this.tag = tag;
-
+        this.isFavorited = isFavorited;
     }
 
-    // Getters e setters para os campos da tarefa
-    public String getTag() {
-        return tag;
-    }
+    public Tarefa() {}
 
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
     public int getId() {
         return id;
     }
@@ -77,5 +70,21 @@ public class Tarefa {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    public boolean isFavorited() {
+        return isFavorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        isFavorited = favorited;
     }
 }

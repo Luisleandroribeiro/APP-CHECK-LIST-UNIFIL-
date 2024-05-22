@@ -2,26 +2,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="4dp"
-    android:layout_margin="8dp"
-    android:padding="8dp">
-
-    <!-- Data da Atividade -->
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Data da Atividade"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentTop="true" />
+    android:padding="3dp">
 
     <!-- Retângulo de fundo -->
     <ImageView
         android:id="@+id/backgroundImageView"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:layout_below="@id/dateTextView"
         android:src="@drawable/retangulobackgroundgreen"
         android:scaleType="fitXY" />
 
@@ -29,10 +16,42 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/dateTextView"
         android:layout_alignLeft="@id/backgroundImageView"
         android:layout_alignRight="@id/backgroundImageView"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="0dp">
+
+        <!-- Ícone de Favorito (Estrela Normal) -->
+        <ImageView
+            android:id="@+id/favoriteImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/iconfav"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:visibility="visible" />
+
+        <!-- Ícone de Favorito (Estrela Vermelha) -->
+        <ImageView
+            android:id="@+id/favoriteRedImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/iconfavred"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:visibility="visible" />
+
+        <!-- Data da Atividade -->
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Data da Atividade"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="12sp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentTop="true" />
 
         <!-- Título da Tarefa -->
         <TextView
@@ -40,11 +59,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Título da Tarefa"
-            android:textColor="#000000"
+            android:textColor="#4FA983"
             android:textSize="18sp"
             android:layout_marginLeft="20dp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="25dp" />
 
         <!-- Subtítulo da Tarefa -->
         <TextView
@@ -53,10 +72,32 @@
             android:layout_height="wrap_content"
             android:text="Subtítulo da Tarefa"
             android:layout_marginLeft="20dp"
-            android:textColor="#000000"
+            android:textColor="#4FA983"
             android:textSize="14sp"
             android:layout_below="@id/titleTextView"
             android:layout_marginTop="8dp" />
+
+        <!-- Fundo do texto da Tag -->
+        <RelativeLayout
+            android:id="@+id/tagsBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_below="@id/titleTextView"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_rectanglegreen">
+
+            <!-- Texto da Tag -->
+            <TextView
+                android:id="@+id/tagsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:text="Tag"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
         <!-- Horário do prazo da Tarefa -->
         <TextView
@@ -70,8 +111,6 @@
             android:layout_below="@id/subtitleTextView"
             android:layout_marginTop="8dp" />
 
-        <!-- Outros detalhes da Tarefa -->
-        <!-- Adicione outros elementos conforme necessário -->
 
     </RelativeLayout>
 

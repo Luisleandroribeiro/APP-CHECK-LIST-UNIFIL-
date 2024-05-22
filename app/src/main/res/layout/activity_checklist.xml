@@ -1,67 +1,186 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context=".ChecklistMain">
 
-    <ImageView
-        android:id="@+id/checklistIcon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/iconmenu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="showMenu"
-        android:contentDescription="Menu de opções" />
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
+    <!-- Conteúdo principal -->
+    <LinearLayout
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Checklist - Abertos"
-        android:textColor="#4FA983"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/checklistIcon"
-        app:layout_constraintStart_toEndOf="@id/checklistIcon"
-        app:layout_constraintTop_toTopOf="@id/checklistIcon" />
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/navigationBar">
 
-    <!-- ListView para exibir as tarefas -->
-    <ListView
-        android:id="@+id/listViewTarefas"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        app:layout_constraintBottom_toTopOf="@id/guideline_bottom" />
+        <!-- Search Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/search_background"
+            android:padding="8dp"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="1.0" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_search"
+                android:contentDescription="@string/search_icon" />
 
-    <!-- Imagem no centro inferior -->
-    <ImageView
-        android:id="@+id/imageBottom"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/adicionaricon"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="openAdicionarTarefaActivity"
-        android:contentDescription="Adicionar Tarefa" />
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/search_hint"
+                android:padding="12dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:inputType="text"
+                android:imeOptions="actionSearch"/>
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Navigation Tabs (Top) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textToDo"
+                android:layout_width="0dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="To Do"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/green"
+                android:onClick="showToDoTasks"
+                android:padding="16dp"/>
+
+            <TextView
+                android:id="@+id/textTag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="Tags"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="@color/green"
+                android:padding="16dp"
+                android:onClick="showTags" />
+
+            <TextView
+                android:id="@+id/textCompleted"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Completed"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="@color/green"
+                android:onClick="showCompletedTasks"
+                android:padding="16dp"/>
+        </LinearLayout>
+
+        <!-- List of Tasks -->
+        <ListView
+            android:id="@+id/listViewTarefas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:layout_above="@id/navigationBar" />
+    </LinearLayout>
+
+    <!-- Bottom Navigation Bar -->
+    <RelativeLayout
+        android:id="@+id/navigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true">
+
+        <!-- Background Image -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/iconbar"
+            android:scaleType="fitXY"
+            android:contentDescription="bar"/>
+
+        <!-- Botões para o lado esquerdo -->
+        <ImageView
+            android:id="@+id/iconHome"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/iconhome"
+            android:contentDescription="Home" />
+
+        <ImageView
+            android:id="@+id/iconFav"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_toEndOf="@id/iconHome"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/iconfav"
+            android:contentDescription="Favorite" />
+
+        <!-- Botões para o lado direito -->
+        <ImageView
+            android:id="@+id/iconPerfil"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/iconperfil"
+            android:contentDescription="perfil"/>
+
+        <ImageView
+            android:id="@+id/iconCalendario"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_toStartOf="@id/iconPerfil"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/iconcalendario"
+            android:contentDescription="calendario"/>
+
+        <!-- Add Task Button (Bottom) -->
+        <ImageView
+            android:id="@+id/imageBottom"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/adicionaricon"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="openAdicionarTarefaActivity"
+            android:contentDescription="Adicionar Tarefa" />
+    </RelativeLayout>
+</RelativeLayout>

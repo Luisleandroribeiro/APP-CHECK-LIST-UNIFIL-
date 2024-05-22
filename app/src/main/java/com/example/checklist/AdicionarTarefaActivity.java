@@ -25,11 +25,14 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
     private EditText dataEditText, horaEditText;
     private Button cancelarButton, salvarButton, deletarButton;
     private ImageView imagemIconFinalizar;
+    private ImageView estrelaImageView;
+    private boolean isFavorited = false; // Variável para controlar o estado de favoritar
     private int userId;
     private Intent intent;
     private boolean tarefaAdicionada = false; // Variável para controlar se a tarefa foi adicionada
     private EditText tagsEditText;
-    private String[] opcoesTags = {"Urgente", "Importante", "Pessoal", "Trabalho", "Estudo", "Saúde", "Lazer", "Financeiro", "Viagem", "Social", "Projetos", "Compras", "Alimentação", "Limpeza", "Exercício", "Lembrete", "Aniversário", "Documentos", "Tecnologia", "Criativo"};
+    private String[] opcoesTags = {"Urgent", "Important", "Personal", "Work", "Study", "Health", "Leisure", "Financial", "Travel", "Social", "Projects", "Shopping", "Food", "Cleaning", "Exercise", "Reminder", "Birthday", "Documents", "Technology", "Creative"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,8 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         salvarButton = findViewById(R.id.salvarButton);
         deletarButton = findViewById(R.id.deletarButton);
         imagemIconFinalizar = findViewById(R.id.imagemIconFinalizar);
+        estrelaImageView = findViewById(R.id.estrelaImageView);
+
         // Configura um OnClickListener para exibir o diálogo de lista quando clicado
         tagsEditText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +59,15 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
                 exibirDialogoListaTags();
             }
         });
+
+        // Configura o OnClickListener para alternar o estado de favoritar
+        estrelaImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFavorite();
+            }
+        });
+
         // Verifique se a tarefa foi adicionada
         // Por exemplo, se você estiver recuperando essa informação de algum lugar, como um banco de dados
         if (tarefaAdicionada || intent.hasExtra("TAREFA_ID")) {
@@ -157,10 +171,20 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             descricaoEditText.setText(intent.getStringExtra("DESCRICAO"));
             tagsEditText.setText(intent.getStringExtra("TAG"));
 
+            // Recupere o estado de favorito do banco de dados ou do objeto Tarefa
+            boolean favorita = intent.getBooleanExtra("FAVORITA", false);
+
+            // Atualize isFavorited com base no estado recuperado
+            isFavorited = favorita;
+
+            atualizarImagemEstrela();
             Log.d("RecuperarTag", "Tag: " + intent.getStringExtra("TAG"));
+            Log.d("SalvarTarefa", "isFavorited antes de criar a tarefa: " + isFavorited); // Adiciona um log para verificar isFavorited antes de criar a tarefa
 
         }
     }
+
+
     private void exibirDialogoListaTags() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Selecione uma Tag");
@@ -180,6 +204,7 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         // Cria e exibe o diálogo de lista
         builder.create().show();
     }
+
     private void salvarTarefa() {
         String titulo = tituloEditText.getText().toString();
         String subtitulo = subtituloEditText.getText().toString();
@@ -187,16 +212,18 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
         String hora = horaEditText.getText().toString();
         String descricao = descricaoEditText.getText().toString();
         String tag = tagsEditText.getText().toString();
-        Log.d("SalvarTarefa", "Tag antes de salvar: " + tag);
+
+        Log.d("SalvarTarefa", "Tag antes de salvar: " + tag); // Adiciona um log para verificar a tag antes de salvar
+
         if (titulo.isEmpty() || subtitulo.isEmpty() || data.isEmpty() || hora.isEmpty() || descricao.isEmpty() || tag.isEmpty()) {
             Toast.makeText(this, "Por favor, preencha todos os campos.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        Tarefa tarefa = new Tarefa(titulo, subtitulo, data, hora, descricao, tag);
+        Tarefa tarefa = new Tarefa(titulo, subtitulo, data, hora, descricao, tag, isFavorited);
 
+        TarefaDAO tarefaDAO = new TarefaDAO(this);
         if (!intent.hasExtra("TAREFA_ID")) {
-            TarefaDAO tarefaDAO = new TarefaDAO(this);
             long resultado = tarefaDAO.inserirTarefa(tarefa, userId);
             if (resultado != -1) {
                 Toast.makeText(this, "Tarefa salva com sucesso!", Toast.LENGTH_SHORT).show();
@@ -208,7 +235,6 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
             int tarefaId = intent.getIntExtra("TAREFA_ID", -1);
             if (tarefaId != -1) {
                 tarefa.setId(tarefaId);
-                TarefaDAO tarefaDAO = new TarefaDAO(this);
                 int linhasAfetadas = tarefaDAO.atualizarTarefa(tarefa);
                 if (linhasAfetadas > 0) {
                     Toast.makeText(this, "Tarefa atualizada com sucesso!", Toast.LENGTH_SHORT).show();
@@ -217,11 +243,11 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
                 }
             }
         }
+        Log.d("SalvarTarefa", "isFavorited antes de criar a tarefa: " + isFavorited); // Adiciona um log para verificar isFavorited antes de criar a tarefa
 
         Intent intent = new Intent(this, ChecklistMain.class);
         intent.putExtra("USER_ID", userId);
         startActivity(intent);
-        finish();
     }
 
     private void cancelarAdicaoTarefa() {
@@ -249,44 +275,38 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
     }
 
     private void finalizarAtividade() {
-        // Aqui você pode implementar a lógica para finalizar a tarefa
-        // Por exemplo, mover a tarefa para a lista de tarefas finalizadas
-        // Ou atualizar o status da tarefa no banco de dados
-
-        // Primeiro, obtenha o ID da tarefa da Intent
         int tarefaId = intent.getIntExtra("TAREFA_ID", -1);
-
-        // Verifique se o ID da tarefa é válido
         if (tarefaId != -1) {
-            // Se o ID da tarefa for válido, crie um objeto Tarefa com o ID
             Tarefa tarefa = new Tarefa();
             tarefa.setId(tarefaId);
-
-            // Em seguida, crie uma instância de TarefaDAO para atualizar a tarefa
             TarefaDAO tarefaDAO = new TarefaDAO(this);
-
-            // Em seguida, chame o método para atualizar a tarefa como finalizada no banco de dados
             int linhasAfetadas = tarefaDAO.marcarComoFinalizada(tarefa);
-
-            // Verifique se a atualização foi bem-sucedida
             if (linhasAfetadas > 0) {
-                // Se a atualização foi bem-sucedida, exiba uma mensagem de sucesso
                 Toast.makeText(this, "Tarefa finalizada com sucesso!", Toast.LENGTH_SHORT).show();
-
-                // Atualize a tela atual (ChecklistMain) para refletir a alteração no status da tarefa
                 Intent updateIntent = new Intent(this, ChecklistMain.class);
                 updateIntent.putExtra("USER_ID", userId);
                 startActivity(updateIntent);
                 finish();
             } else {
-                // Se ocorrer um erro ao atualizar a tarefa no banco de dados, exiba uma mensagem de erro
                 Toast.makeText(this, "Erro ao finalizar a tarefa", Toast.LENGTH_SHORT).show();
             }
         } else {
-            // Se o ID da tarefa não for válido, exiba uma mensagem de erro
             Toast.makeText(this, "ID da tarefa inválido", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void toggleFavorite() {
+        isFavorited = !isFavorited;
+        atualizarImagemEstrela();
+        Log.d("ToggleFavorite", "Novo estado de isFavorited: " + isFavorited);
 
+    }
+
+    private void atualizarImagemEstrela() {
+        if (isFavorited) {
+            estrelaImageView.setImageResource(R.drawable.iconfavred);
+        } else {
+            estrelaImageView.setImageResource(R.drawable.iconfav);
+        }
+    }
 }
