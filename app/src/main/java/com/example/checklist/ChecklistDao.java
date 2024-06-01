@@ -1,5 +1,6 @@
 package com.example.checklist;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -33,8 +34,9 @@ public interface ChecklistDao {
     @Query("SELECT COUNT(*) FROM users WHERE email = :email")
     int getUserCountByEmail(String email);
 
-    @Query("SELECT COUNT(*) FROM users WHERE username = :username AND password = :password")
-    int getUserCountByUsernameAndPassword(String username, String password);
+    @Query("SELECT * FROM users WHERE id = :userId")
+    LiveData<User> getUserById(int userId);
 
-    // Outros métodos de acesso aos dados, como consulta por ID, exclusão de todos os itens, etc.
+    @Update
+    void updatePassword(User user);
 }

@@ -1,9 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/checklistAbertos"
-        android:title="Checklist - Aberto" />
-    <item
-        android:id="@+id/checklistFinalizados"
-        android:title="Checklist - Finalizados" />
-
-</menu>

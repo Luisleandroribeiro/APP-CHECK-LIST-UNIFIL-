@@ -140,7 +140,6 @@ public class TarefaAdapter extends BaseAdapter {
 
 
     private long convertToMillis(String date, String time) {
-        // Implemente a conversão da data e hora para milissegundos
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         try {
             Date parsedDate = dateFormat.parse(date + " " + time);

@@ -92,10 +92,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    // Método para autenticar o usuário (substitua este método com sua própria lógica de autenticação)
-    // Método para autenticar o usuário (substitua este método com sua própria lógica de autenticação)
+    // Método para autenticar o usuário
     private Integer authenticateUser(String username, String password) {
         // Consultar o banco de dados para verificar se o usuário existe e a senha está correta
         return checklistDao.getUserIdByUsernameAndPassword(username, password);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        finishAffinity(); //
     }
 }

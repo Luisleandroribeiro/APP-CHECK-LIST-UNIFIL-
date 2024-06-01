@@ -13,8 +13,16 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ChecklistMain extends AppCompatActivity {
 
@@ -25,6 +33,7 @@ public class ChecklistMain extends AppCompatActivity {
     private TarefaAdapter adapter;
     private int userId;
     private EditText searchEditText;
+    private SimpleDateFormat dateFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +51,8 @@ public class ChecklistMain extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText);
         adapter = new TarefaAdapter(this, listaTarefasFiltradas);
         listViewTarefas.setAdapter(adapter);
+
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         listViewTarefas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,8 +119,99 @@ public class ChecklistMain extends AppCompatActivity {
             }
         });
 
+        // Configura o clique no ícone de calendário
+        ImageView iconCalendario = findViewById(R.id.iconCalendario);
+        iconCalendario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarDateRangePicker();
+            }
+        });
+        // Configura o clique no ícone de perfil
+        ImageView iconPerfil = findViewById(R.id.iconPerfil);
+        iconPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirPerfil();
+            }
+        });
         // Carrega as tarefas do banco de dados ao iniciar a atividade
         carregarTarefasDoBancoDeDados("ToDo"); // Carrega as tarefas "ToDo" por padrão
+    }
+
+    private void mostrarDateRangePicker() {
+        // Remove o construtor de restrições de calendário que limita a seleção de datas para o futuro
+        CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+
+        // Cria o builder do DateRangePicker
+        MaterialDatePicker.Builder<androidx.core.util.Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
+        builder.setTitleText("Selecione o intervalo de datas");
+        builder.setCalendarConstraints(constraintsBuilder.build());
+
+        final MaterialDatePicker<androidx.core.util.Pair<Long, Long>> picker = builder.build();
+        picker.show(getSupportFragmentManager(), picker.toString());
+
+        picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<androidx.core.util.Pair<Long, Long>>() {
+            @Override
+            public void onPositiveButtonClick(androidx.core.util.Pair<Long, Long> selection) {
+                if (selection != null) {
+                    SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    String startDate = simpleFormat.format(new Date(selection.first));
+                    String endDate = simpleFormat.format(new Date(selection.second));
+                    Log.d("ChecklistMain", "Intervalo de datas selecionado: " + startDate + " - " + endDate);
+                    filtrarTarefasPorIntervaloDeDatas(startDate, endDate);
+                }
+            }
+        });
+    }
+    // Método para abrir a atividade de perfil
+    private void abrirPerfil() {
+        Intent intent = new Intent(this, PerfilActivity.class);
+        intent.putExtra("USER_ID", userId);
+        startActivity(intent);
+    }
+    private void filtrarTarefasPorIntervaloDeDatas(String startDate, String endDate) {
+        // Método para filtrar as tarefas pelo intervalo de datas selecionado
+        listaTarefasFiltradas.clear();
+
+        // Defina o formato da data para as datas de início e fim
+        SimpleDateFormat intervalDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        // Defina o formato da data para as datas das tarefas
+        SimpleDateFormat taskDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+        Date start;
+        Date end;
+        try {
+            start = intervalDateFormat.parse(startDate);
+            end = intervalDateFormat.parse(endDate);
+            Log.d("ChecklistMain", "Data inicial analisada: " + start);
+            Log.d("ChecklistMain", "Data final analisada: " + end);
+
+            for (Tarefa tarefa : listaTarefas) {
+                String tarefaData = tarefa.getData();
+                Log.d("ChecklistMain", "Data da tarefa em String: " + tarefaData);
+
+                Date taskDate;
+                try {
+                    taskDate = taskDateFormat.parse(tarefaData);
+                    Log.d("ChecklistMain", "Data da tarefa: " + taskDate);
+
+                    if (taskDate != null && !taskDate.before(start) && !taskDate.after(end)) {
+                        listaTarefasFiltradas.add(tarefa);
+                        Log.d("ChecklistMain", "Tarefa adicionada: " + tarefa.getTitulo());
+                    }
+                } catch (ParseException e) {
+                    Log.e("ChecklistMain", "Erro ao analisar data da tarefa: " + tarefaData, e);
+                }
+            }
+        } catch (ParseException e) {
+            Log.e("ChecklistMain", "Erro ao analisar datas de início ou fim", e);
+        }
+
+        adapter.notifyDataSetChanged();
+
+        // Define a visibilidade do ListView com base na presença de tarefas
+        listViewTarefas.setVisibility(listaTarefasFiltradas.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     private void carregarTarefasFavoritasDoBancoDeDados(String tipo) {
@@ -139,9 +241,7 @@ public class ChecklistMain extends AppCompatActivity {
         listViewTarefas.setVisibility(listaTarefasFiltradas.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
-
     public void showToDoTasks(View view) {
-        // Carrega as tarefas "ToDo" ao clicar em ToDo
         currentTab = "ToDo"; // Atualiza a aba atual para "ToDo"
         carregarTarefasDoBancoDeDados("ToDo");
     }
@@ -160,7 +260,7 @@ public class ChecklistMain extends AppCompatActivity {
 
         // Obtém as tarefas do banco de dados com base no tipo
         if (tipo.equals("ToDo")) {
-            // Carrega as tarefas "ToDo" que não são favoritas
+            // Carrega as tarefas ToDo que não são favoritas
             listaTarefas.addAll(tarefaDAO.obterTarefasNaoFinalizadasPorUsuario(userId));
         } else if (tipo.equals("Completed")) {
             // Carrega as tarefas "Completed" que não são favoritas
@@ -229,8 +329,4 @@ public class ChecklistMain extends AppCompatActivity {
         listViewTarefas.setVisibility(listaTarefasFiltradas.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
-    public void showTags(View view) {
-        // Carrega as tarefas agrupadas por tag ao clicar em Tag
-        carregarTarefasPorTag();
-    }
 }

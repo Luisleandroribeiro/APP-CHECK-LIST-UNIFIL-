@@ -62,18 +62,7 @@
                 android:onClick="showToDoTasks"
                 android:padding="16dp"/>
 
-            <TextView
-                android:id="@+id/textTag"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:text="Tags"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="@color/green"
-                android:padding="16dp"
-                android:onClick="showTags" />
+
 
             <TextView
                 android:id="@+id/textCompleted"

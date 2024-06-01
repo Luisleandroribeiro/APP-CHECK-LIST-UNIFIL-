@@ -13,7 +13,6 @@ public class User {
 
     // Construtor, getters e setters
 
-    // Exemplo de construtor
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
