@@ -145,7 +145,7 @@ public class ChecklistMain extends AppCompatActivity {
 
         // Cria o builder do DateRangePicker
         MaterialDatePicker.Builder<androidx.core.util.Pair<Long, Long>> builder = MaterialDatePicker.Builder.dateRangePicker();
-        builder.setTitleText("Selecione o intervalo de datas");
+        builder.setTitleText("Select date range");
         builder.setCalendarConstraints(constraintsBuilder.build());
 
         final MaterialDatePicker<androidx.core.util.Pair<Long, Long>> picker = builder.build();

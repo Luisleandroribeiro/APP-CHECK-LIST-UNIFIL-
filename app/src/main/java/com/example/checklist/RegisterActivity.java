@@ -62,19 +62,19 @@ public class RegisterActivity extends AppCompatActivity {
                 // Verificar se os campos estão vazios
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(email) ||
                         TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
-                    Toast.makeText(RegisterActivity.this, "Por favor, preencher todos os campos.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 // Verificar se a senha e a confirmação de senha correspondem
                 if (!password.equals(confirmPassword)) {
-                    Toast.makeText(RegisterActivity.this, "As senhas não se combinam", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Passwords don't match", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 // Verificar se o usuário aceitou os termos de uso
                 if (!termsAccepted) {
-                    Toast.makeText(RegisterActivity.this, "Por favor, aceite os Termos de Uso", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Please accept the Terms of Use", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -105,26 +105,26 @@ public class RegisterActivity extends AppCompatActivity {
     private void showTermsOfUseDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Terms of Use");
-        builder.setMessage("1. Aceitação dos Termos\n\n" +
-                "Ao criar uma conta e utilizar o aplicativo TaskBro, você concorda em cumprir e estar legalmente vinculado aos seguintes termos e condições a seguir. Estes Termos de Uso aplicam-se a todos os visitantes, usuários e outros que acessam ou utilizam o aplicativo.\n\n" +
-                "2. Uso do Aplicativo\n\n" +
-                "Você concorda em usar o aplicativo apenas para fins legais e de acordo com os Termos de Uso. Você é responsável por garantir que seu uso do aplicativo esteja em conformidade com todas as leis, regras e regulamentos aplicáveis.\n\n" +
-                "3. Registro de Conta\n\n" +
-                "Para acessar certas funcionalidades do aplicativo, você pode ser solicitado a criar uma conta. Você deve fornecer informações precisas, completas e atualizadas durante o registro e manter a confidencialidade da sua conta e senha. Você é responsável por todas as atividades que ocorrem sob sua conta.\n\n" +
-                "4. Conteúdo do Usuário\n\n" +
-                "Você é o único responsável pelo conteúdo que você carrega, publica ou exibe no aplicativo. Você não deve postar conteúdo que seja ilegal, ofensivo, prejudicial ou viole os direitos de terceiros.\n\n" +
-                "5. Propriedade Intelectual\n\n" +
-                "O aplicativo e seu conteúdo original, recursos e funcionalidades são e continuarão sendo propriedade exclusiva do aplicativo TaskBro e seus licenciadores. O aplicativo está protegido por direitos autorais, marcas registradas e outras leis de propriedade intelectual.\n\n" +
-                "6. Privacidade\n\n" +
-                "Sua privacidade é importante para nós. Nossa Política de Privacidade explica como coletamos, usamos e protegemos suas informações pessoais quando você usa o aplicativo. Recomendamos que você leia nossa Política de Privacidade cuidadosamente.\n\n" +
-                "7. Rescisão\n\n" +
-                "Podemos encerrar ou suspender sua conta imediatamente, sem aviso prévio ou responsabilidade, por qualquer motivo, incluindo, sem limitação, se você violar os Termos de Uso. Após a rescisão, seu direito de usar o aplicativo cessará imediatamente.\n\n" +
-                "8. Limitação de Responsabilidade\n\n" +
-                "Na máxima extensão permitida pela lei aplicável, o aplicativo TaskBro não será responsável por quaisquer danos indiretos, incidentais, especiais, consequentes ou punitivos, incluindo, sem limitação, perda de lucros, dados, uso, fundo de comércio ou outras perdas intangíveis, resultantes de (i) seu uso ou incapacidade de usar o aplicativo; (ii) qualquer acesso não autorizado ou uso dos nossos servidores e/ou qualquer informação pessoal armazenada neles.\n\n" +
-                "9. Alterações nos Termos\n\n" +
-                "Reservamo-nos o direito de modificar ou substituir estes Termos de Uso a qualquer momento. Se uma revisão for material, tentaremos fornecer um aviso com pelo menos 30 dias de antecedência antes que quaisquer novos termos entrem em vigor. O que constitui uma mudança material será determinado a nosso exclusivo critério.\n\n" +
-                "10. Contato\n\n" +
-                "Se você tiver alguma dúvida sobre estes Termos de Uso, entre em contato conosco.");
+        builder.setMessage("1. Acceptance of Terms\n\n" +
+                "By creating an account and using the TaskBro app, you agree to comply with and be legally bound by the following terms and conditions below. These Terms of Use apply to all visitors, users and others who access or use the app.\n\n" +
+                "2. Use of the Application\n\n" +
+                "You agree to use the application only for lawful purposes and in accordance with the Terms of Use. You are responsible for ensuring that your use of the application complies with all applicable laws, rules and regulations.\n\n" +
+                "3. Account Registration\n\n" +
+                "To access certain functionality of the Application, you may be required to create an account. You must provide accurate, complete and up-to-date information during registration and maintain the confidentiality of your account and password. You are responsible for all activities that occur under your account.\n\n" +
+                "4. User Content\n\n" +
+                "You are solely responsible for the content that you upload, post or display on the application. You must not post content that is illegal, offensive, harmful or violates the rights of third parties.\n\n" +
+                "5. Intellectual Property\n\n" +
+                "The App and its original content, features and functionality are and will remain the exclusive property of the TaskBro App and its licensors. The App is protected by copyright, trademark and other intellectual property laws.\n\n" +
+                "6. Privacy\n\n" +
+                "Your privacy is important to us. Our Privacy Policy explains how we collect, use and protect your personal information when you use the app. We recommend that you read our Privacy Policy carefully.\n\n" +
+                "7. Termination\n\n" +
+                "We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms of Use. Upon termination, your right to use the App will immediately cease.\n\n" +
+                "8. Limitation of Liability\n\n" +
+                "To the maximum extent permitted by applicable law, the TaskBro app will not be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill or other intangible losses, resulting of (i) your use of or inability to use the application; (ii) any unauthorized access to or use of our servers and/or any personal information stored therein.\n\n" +
+                "9. Changes to Terms\n\n" +
+                "We reserve the right to modify or replace these Terms of Use at any time. If a revision is material, we will try to provide at least 30 days' notice before any new terms take effect. What constitutes a material change will be determined at our sole discretion.\n\n" +
+                "10. Contact\n\n" +
+                "If you have any questions about these Terms of Use, please contact us.");
 
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -147,14 +147,14 @@ public class RegisterActivity extends AppCompatActivity {
             // Verificar se o usuário já existe no banco de dados
             int userCountByUsername = checklistDao.getUserCountByUsername(username);
             if (userCountByUsername > 0) {
-                showToastOnUiThread("Nome de usuário já existe");
+                showToastOnUiThread("Username already exists");
                 return null;
             }
 
             // Verificar se o email já existe no banco de dados
             int userCountByEmail = checklistDao.getUserCountByEmail(email);
             if (userCountByEmail > 0) {
-                showToastOnUiThread("O e-mail já existe");
+                showToastOnUiThread("The email already exists");
                 return null;
             }
 
@@ -178,7 +178,7 @@ public class RegisterActivity extends AppCompatActivity {
                 newUser.setId(userId.intValue());
 
                 // Exibir uma mensagem de sucesso
-                showToastOnUiThread("Registro bem-sucedido");
+                showToastOnUiThread("Successful registration");
 
                 // Redirecionar o usuário para a tela de login
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
