@@ -1,6 +1,6 @@
 🚀 Animado para Compartilhar: Vídeo de Demonstração do Aplicativo TaskBro! 🚀
 
-Olá, comunidade do LinkedIn! Estou empolgado para apresentar a vocês o TaskBro, um aplicativo inovador de gerenciamento de tarefas e listas de verificação, projetado para ajudar os usuários 
+Olá, comunidade! Estou empolgado para apresentar a vocês o TaskBro, um aplicativo inovador de gerenciamento de tarefas e listas de verificação, projetado para ajudar os usuários 
 a organizar e administrar suas atividades diárias de forma eficiente e produtiva.
 
 📲 Assista ao Vídeo: [https://youtu.be/0qx4p7Rvr38]
